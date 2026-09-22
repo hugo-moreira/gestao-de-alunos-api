@@ -29,18 +29,24 @@ banco está vazio (veja [Dados fake pré-carregados](#dados-fake-pré-carregados
 
 ## Stack utilizada
 
+### Produção
 - **Node.js** com módulos ES (`"type": "module"` no `package.json`)
 - **Express** — framework web e roteamento
-- **MongoDB** com **Mongoose** — persistência dos dados (alunos, disciplinas, matrículas, notas e
-  trabalhos)
+- **MongoDB** com **Mongoose** — persistência dos dados (alunos, disciplinas, matrículas, notas e trabalhos)
 - **jsonwebtoken** — emissão e verificação dos tokens JWT usados na autenticação
 - **bcryptjs** — hash das senhas armazenadas no banco
+- **dotenv** — gerenciamento de variáveis de ambiente
 - **js-yaml** — carregamento do arquivo de documentação OpenAPI em YAML
 - **swagger-ui-express** — renderização do Swagger UI a partir do YAML
 - **cors** — liberação de CORS para consumo por outros clientes/origens
 - **morgan** — log de requisições HTTP no console
-- **nodemon** (dependência de desenvolvimento) — reinício automático do servidor durante o
-  desenvolvimento
+
+### Desenvolvimento e Testes
+- **nodemon** — reinício automático do servidor durante o desenvolvimento
+- **mocha** — framework de testes
+- **chai** — biblioteca de asserções para testes
+- **supertest** — testes de API HTTP
+- **mongodb-memory-server** — MongoDB em memória para testes isolados
 
 A autenticação é real: senhas com hash (bcrypt) e sessões via JWT assinado.
 
@@ -92,6 +98,9 @@ npm start
 
 # subir em modo desenvolvimento (reinício automático com nodemon)
 npm run dev
+
+# executar testes automatizados
+npm test
 ```
 
 O servidor sobe por padrão em `http://localhost:3000` (pode ser alterado com a variável de
@@ -110,6 +119,63 @@ MONGODB_URI="mongodb://usuario:senha@host:27017/nome-do-banco" npm start
 Na primeira execução com o banco vazio, a API popula automaticamente as coleções com o conjunto de
 dados fake descrito em [Dados fake pré-carregados](#dados-fake-pré-carregados). Em execuções
 seguintes, os dados já existentes são preservados.
+
+### Configuração de Variáveis de Ambiente (Dotenv)
+
+O projeto utiliza **dotenv** para gerenciar variáveis de ambiente. Crie um arquivo `.env` na raiz do projeto baseado no `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
+Variáveis disponíveis:
+- `MONGODB_URI` - String de conexão do MongoDB
+- `JWT_SECRET` - Segredo para assinatura dos tokens JWT
+- `PORT` - Porta do servidor (padrão: 3000)
+- `NODE_ENV` - Ambiente de execução (development/production)
+
+## Testes Automatizados
+
+O projeto possui testes automatizados usando **Mocha**, **SuperTest** e **Chai**. Os testes são executados com MongoDB em memória (mongodb-memory-server), sem necessidade de uma instância real do banco.
+
+### Estrutura de Testes
+
+```
+test/
+  data/
+    teste-dados.json      # Dados de teste (Data-Driven Testing)
+  helpers/
+    requisicoes.js        # Helpers de autenticação e utilitários
+  auth.test.js            # Testes de autenticação
+  exemplo-pratico.test.js # Testes de disciplinas
+  fluxo-gestao.test.js    # Teste de fluxo completo
+  setup-memoria.js        # Configuração do MongoDB em memória
+```
+
+### Executar Testes
+
+```bash
+npm test
+```
+
+### Helpers de Teste
+
+O arquivo `test/helpers/requisicoes.js` contém funções auxiliares documentadas:
+
+- **`autenticar(app, email, senha)`** - Realiza login e retorna o token JWT
+- **`comToken(token)`** - Monta o header Authorization com o token
+- **`sufixoUnico()`** - Gera sufixo único para evitar conflitos nos testes
+
+### Data-Driven Testing
+
+Os dados usados nos testes estão centralizados no arquivo `test/data/teste-dados.json`, facilitando manutenção e reutilização de dados de teste.
+
+### CI/CD com GitHub Actions
+
+O projeto possui pipeline configurada em `.github/workflows/tests.yml` que executa automaticamente:
+- ✅ Instalação de dependências
+- ✅ Execução de todos os testes
+- ✅ Validação em cada push e pull request
 
 ## Documentação da API (Swagger)
 

@@ -1,0 +1,65 @@
+{
+  "admin": {
+    "email": "admin@escola.com",
+    "senha": "admin123"
+  },
+  "alunos": [
+    {
+      "nome": "Diego Teste",
+      "email": "diego.teste@example.com",
+      "matricula": "T2024001",
+      "senha": "123456"
+    },
+    {
+      "nome": "Maria Silva",
+      "email": "maria.silva@example.com",
+      "matricula": "T2024002",
+      "senha": "senha123"
+    },
+    {
+      "nome": "João Santos",
+      "email": "joao.santos@example.com",
+      "matricula": "T2024003",
+      "senha": "senha456"
+    }
+  ],
+  "disciplinas": [
+    {
+      "nome": "Algoritmos",
+      "codigo": "ALG001",
+      "cargaHoraria": 60
+    },
+    {
+      "nome": "Banco de Dados",
+      "codigo": "BD001",
+      "cargaHoraria": 80
+    },
+    {
+      "nome": "Engenharia de Software",
+      "codigo": "ES001",
+      "cargaHoraria": 60
+    }
+  ],
+  "trabalhos": [
+    {
+      "titulo": "Lista de exercícios - Algoritmos",
+      "descricao": "Resolução de exercícios sobre estruturas de dados"
+    },
+    {
+      "titulo": "Projeto Final",
+      "descricao": "Desenvolvimento de sistema completo"
+    }
+  ],
+  "notas": [
+    {
+      "valor": 8.5,
+      "tipo": "prova",
+      "descricao": "Prova 1 - Algoritmos"
+    },
+    {
+      "valor": 9.0,
+      "tipo": "trabalho",
+      "descricao": "Trabalho prático"
+    }
+  ]
+}
